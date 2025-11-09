@@ -12,24 +12,29 @@ export default function useFetch<T>(
     try {
       setLoading(true);
       setError(null);
+
       const result = await fetchFunction();
       setData(result);
-    } catch (error) {
+    } catch (err) {
       setError(
-        error instanceof Error
-          ? error
-          : new Error("An unexpected error occured")
+        err instanceof Error ? err : new Error("An unknown error occurred")
       );
     } finally {
       setLoading(false);
     }
   }
-  function reset() {
-    useEffect(() => {
-      if (autoFetch) {
-        fetchData();
-      }
-    }, []);
-  }
+
+  function reset () {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (autoFetch) {
+      fetchData();
+    }
+  }, []);
+
   return { data, loading, error, refetch: fetchData, reset };
 }

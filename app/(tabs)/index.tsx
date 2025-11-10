@@ -11,6 +11,7 @@ import {
   Text,
   View,
 } from "react-native";
+import MovieCard from "../Components/MovieCard";
 import Searchbar from "../Components/Searchbar";
 
 export default function Index() {
@@ -44,20 +45,19 @@ export default function Index() {
           <Text>Error: {moviesError?.message}</Text>
         ) : (
           <View className="flex-1 mt-5">
-            <Searchbar onPress={searchPush} />
+            <Searchbar onPress={searchPush} placeholder="Search for a movie" />
             <>
               <Text className="text-lg text-white font-bold mt-5 mb-3">
                 Latest Movies
               </Text>
               <FlatList
                 data={movies}
-                renderItem={({ item }) => (
-                  <Text className="text-white text-sm">{item.title}</Text>
-                )}
+                renderItem={({ item }) => <MovieCard {...item} />}
                 keyExtractor={(item) => item.id.toString()}
-                numColumns={3}
+                numColumns={2}
                 columnWrapperStyle={{
-                  justifyContent: "flex-start",
+                  // justifyContent: "flex-start",
+                  justifyContent: "space-between",
                   gap: 20,
                   paddingRight: 5,
                   marginBottom: 10,

@@ -10,7 +10,7 @@ export default function MovieCard({
   vote_average,
   release_date,
 }: Movie) {
-  // console.log(poster_path)
+  // console.log(id, title, poster_path, vote_average, release_date);
   return (
     <Link href={`/movie/${id}`} asChild>
       <TouchableOpacity className="flex flex-1 gap-2">
@@ -26,21 +26,26 @@ export default function MovieCard({
         <Text className="font-bold text-white" numberOfLines={1}>
           {title.length > 20 ? title.substring(0, 17) + "..." : title}
         </Text>
-        <View className="flex-row items-center justify-start gap-x-1">
-          <Image source={icons.star} className="size-4" />
-          {/* <Text className="text-white">{Math.round(vote_average/2)}</Text> */}
-          <Text className="text-white text-sm font-bold uppercase">
-            {Math.round(vote_average)}
+        <View className="flex flex-row items-center justify-between w-40">
+          <View className="flex-row items-center justify-start gap-x-1">
+            <Image source={icons.star} className="size-4" />
+            {/* <Text className="text-white">{Math.round(vote_average/2)}</Text> */}
+            <Text className="text-white text-sm font-bold uppercase">
+              {Math.round(vote_average)}
+            </Text>
+          </View>
+          <Text className="text-sm text-light-300 font-medium">
+            {release_date?.split("-")[0]}
           </Text>
         </View>
-        <View className="flex-row items-center justify-between">
+        {/* <View className="flex-row items-center justify-between">
           <Text className="text-sm text-light-300 font-medium mt-1">
             {release_date?.split("-")[0]}
           </Text>
           <Text className="text-sm font-medium text-light-300 uppercase">
             Movie
           </Text>
-        </View>
+        </View> */}
       </TouchableOpacity>
     </Link>
   );

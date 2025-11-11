@@ -1,3 +1,5 @@
+import { supabase } from "@/supabase";
+
 export const TMDB_CONFIG = {
   BASE_URL: "https://api.themoviedb.org/3",
   API_KEY: process.env.EXPO_PUBLIC_MOVIE_API_KEY,
@@ -33,13 +35,10 @@ export async function fetchMovieDetails(
   movieId: string
 ): Promise<MovieDetails> {
   try {
-    const response = await fetch(
-      `${TMDB_CONFIG.BASE_URL}/movie/${movieId}?api_key=${TMDB_CONFIG.API_KEY}`,
-      {
-        method: "GET",
-        headers: TMDB_CONFIG.headers,
-      }
-    );
+    const response = await fetch(`${TMDB_CONFIG.BASE_URL}/movie/${movieId}`, {
+      method: "GET",
+      headers: TMDB_CONFIG.headers,
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch movie details: ${response.statusText}`);
@@ -51,4 +50,36 @@ export async function fetchMovieDetails(
     console.error("Error fetching movie details:", error);
     throw error;
   }
+}
+
+export async function fetchSaved() {
+  const { data, error } = await supabase
+    .from("savedMovies") // your table name
+    .select("*"); // select all columns
+
+  if (error) {
+    console.error("Error fetching saved movies:", error);
+    return [];
+  }
+
+  return data;
+}
+
+export async function saveMovie({
+  id,
+  title,
+  poster_path,
+  vote_average,
+  release_date,
+}: any) {
+  const { data, error } = await supabase
+    .from("savedMovies")
+    .insert([{ id, title, poster_path, vote_average, release_date }]); // data must be inside an array
+
+  if (error) {
+    console.error("Error inserting profile:", error);
+    return null;
+  }
+
+  return data;
 }
